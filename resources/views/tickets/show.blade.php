@@ -80,6 +80,23 @@
                 </tr>
                 <tr class="bg-white border-b dark:bg-gray-700 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Assigned Agent
+                    </th>
+                    <td class="px-6 py-4">
+                        {{-- {{ $ticket->author_email }} --}}
+                        <form action="" method="post">
+                            @csrf
+                            <select name="assigned_agent" id="" onchange="this.form.submit()">
+                                <option hidden selected>Select an agent</option>
+                                @foreach ($users as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-700 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         Comments
                     </th>
                     <td class="px-6 py-4">

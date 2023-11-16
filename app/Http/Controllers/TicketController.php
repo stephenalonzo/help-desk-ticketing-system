@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TicketRequest;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\Request;
-
-use function Symfony\Component\String\b;
 
 class TicketController extends Controller
 {
@@ -72,8 +71,10 @@ class TicketController extends Controller
      */
     public function show($id)
     {
+
         return view('tickets.show', [
-            'ticket' => Ticket::findorFail($id)
+            'ticket' => Ticket::findorFail($id),
+            'users' => User::role('agent')->get()
         ]);
     }
 
