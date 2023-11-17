@@ -15,7 +15,14 @@ class Ticket extends Model
         'author_email', 
         'title', 
         'category', 
-        'description'
+        'description',
     ];
+
+    public function comments()
+    {
+
+        return $this->belongsToMany(Comment::class);
+
+    }
 
 }

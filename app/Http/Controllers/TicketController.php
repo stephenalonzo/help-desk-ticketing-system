@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AgentRequest;
+use App\Http\Requests\CommentRequest;
 use App\Http\Requests\TicketRequest;
 use App\Models\Ticket;
 use App\Models\User;
@@ -59,7 +61,7 @@ class TicketController extends Controller
             'description' => $request->description
         ]);
 
-        return redirect(route('ticket.index'))->with('ticket_submitted', 'Ticket submitted successfully!');
+        return redirect(route('tickets.index'))->with('ticket_submitted', 'Ticket submitted successfully!');
 
     }
 
@@ -72,10 +74,14 @@ class TicketController extends Controller
     public function show($id)
     {
 
+        $ticket = Ticket::findorFail($id);
+
         return view('tickets.show', [
             'ticket' => Ticket::findorFail($id),
-            'users' => User::role('agent')->get()
+            'users' => User::role('agent')->get(),
+            'agents' => User::role('agent')->where('id', $ticket->assigned_agent)->get()
         ]);
+        
     }
 
     /**
@@ -96,9 +102,19 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AgentRequest $request, Ticket $ticket)
     {
-        //
+        
+        // Assign an agent to ticket
+
+        $request->validated();
+
+        Ticket::where('id', $ticket->id)->update([
+            'assigned_agent' => $request->assigned_agent]
+        );
+
+        return redirect(route('tickets.show', $ticket->id));
+        
     }
 
     /**

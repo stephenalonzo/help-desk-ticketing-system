@@ -13,16 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tickets', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->longText('description');
-            // $table->string('status')->nullable();
-            // $table->string('priority');
-            $table->string('category');
-            $table->string('author');
-            $table->string('author_email');
-            $table->bigInteger('assigned_agent')->nullable();
+            $table->longText('comment');
             $table->timestamps();
         });
     }
@@ -34,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tickets');
+        Schema::dropIfExists('comments');
     }
 };

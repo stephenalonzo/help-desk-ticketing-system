@@ -84,8 +84,11 @@
                     </th>
                     <td class="px-6 py-4">
                         {{-- {{ $ticket->author_email }} --}}
-                        <form action="" method="post">
+                        @if (empty($ticket->assigned_agent))
+                        @role('admin')
+                        <form action="{{ route('tickets.update', $ticket->id) }}" method="POST">
                             @csrf
+                            @method('PATCH')
                             <select name="assigned_agent" id="" onchange="this.form.submit()">
                                 <option hidden selected>Select an agent</option>
                                 @foreach ($users as $user)
@@ -93,14 +96,50 @@
                                 @endforeach
                             </select>
                         </form>
+                        @endrole
+                        @else
+                        @foreach ($agents as $agent)
+                            <p>{{ $agent->name }}</p>
+                        @endforeach
+                        @endif
                     </td>
                 </tr>
                 <tr class="bg-white border-b dark:bg-gray-700 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         Comments
                     </th>
-                    <td class="px-6 py-4">
-                        {{-- {{ $ticket }} --}}
+                    <td class="px-6 py-8 space-y-8">
+                        @if ($ticket->assigned_agent == Auth::user()->id)
+                        <form action="/ticket/{{ $ticket->id }}/comment" method="post" class="space-y-4">
+                            @csrf
+                            <textarea name="comment" class="w-full h-52 resize-none border border-gray-400" placeholder="Add comment..."></textarea>
+                            <button type="submit" class="px-4 py-2 rounded-md bg-blue-700 text-white">Submit</button>
+                        </form>
+                        @endif
+                        @foreach ($ticket->comments as $comment)
+                        @if (count($ticket->comments) == 1)
+                        <div class="space-y-4">
+                            <div class="flex flex-row items-center space-x-4">
+                                @foreach ($comment->users as $user)
+                                <h5 class="font-semibold">{{ $user->name}}</h5>
+                                @endforeach
+                                <p class="text-xs text-gray-500">{{ date('F d, Y h:i A', strtotime($comment->created_at)) }}</p>
+                            </div>
+                            <p>{{ $comment->comment }}</p>
+                        </div>
+                        @else
+                        <hr>
+                        <div class="space-y-4">
+                            <div class="flex flex-row items-center space-x-4">
+                                @foreach ($comment->users as $user)
+                                <h5 class="font-semibold">{{ $user->name}}</h5>
+                                @endforeach
+                                <p class="text-xs text-gray-500">{{ date('F d, Y h:i A', strtotime($comment->created_at)) }}</p>
+                            </div>
+                            <p>{{ $comment->comment }}</p>
+                        </div>
+                        @endif
+                        @endforeach
                     </td>
                 </tr>
             </tbody>
