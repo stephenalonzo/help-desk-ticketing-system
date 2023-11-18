@@ -14,7 +14,9 @@ class Ticket extends Model
         'author', 
         'author_email', 
         'title', 
-        'category', 
+        'category',
+        'status',
+        'priority',
         'description',
     ];
 
@@ -22,6 +24,20 @@ class Ticket extends Model
     {
 
         return $this->belongsToMany(Comment::class);
+
+    }
+
+    public function categories()
+    {
+
+        return $this->belongsToMany(Category::class);
+
+    }
+
+    public function priorities()
+    {
+
+        return $this->belongsToMany(Priority::class);
 
     }
 
