@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('description');
-            // $table->string('status')->nullable();
+            $table->string('status')->default('Open');
             // $table->string('priority');
-            $table->string('category');
+            // $table->string('category');
             $table->string('author');
             $table->string('author_email');
             $table->bigInteger('assigned_agent')->nullable();

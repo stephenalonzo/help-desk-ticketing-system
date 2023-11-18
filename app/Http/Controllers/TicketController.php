@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AgentRequest;
-use App\Http\Requests\CommentRequest;
-use App\Http\Requests\TicketRequest;
-use App\Models\Ticket;
 use App\Models\User;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
+use App\Http\Requests\AgentRequest;
+use App\Http\Requests\StatusRequest;
+use App\Http\Requests\TicketRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
+use App\Models\CategoryTicket;
+use App\Models\Priority;
+use App\Models\PriorityTicket;
 
 class TicketController extends Controller
 {
@@ -18,9 +23,11 @@ class TicketController extends Controller
      */
     public function index()
     {
+        
         return view('tickets.index', [
             'tickets' => Ticket::all()
         ]);
+
     }
 
     /**
@@ -30,7 +37,10 @@ class TicketController extends Controller
      */
     public function create()
     {
-        return view('tickets.create');
+        return view('tickets.create', [
+            'categories' => Category::all(),
+            'priorities' => Priority::all()
+        ]);
     }
 
     /**
@@ -44,25 +54,36 @@ class TicketController extends Controller
         
         $request->validated();
 
-        switch ($request->category)
+        $user = User::where('name', $request->author)->where('email', $request->author_email)->get();
+
+        if (count($user) == 0)
         {
 
-            case 1:
-                $category = 'Printers';
-            break;
+            return redirect(route('tickets.create'))->with('message', 'Unable to create ticket! Please try again');
+
+        } else {
+
+            $ticket = Ticket::create([
+                'author' => $request->author,
+                'author_email' => $request->author_email,
+                'title' => $request->title,
+                'description' => $request->description
+            ]);
+
+            CategoryTicket::create([
+                'category_id' => $request->category,
+                'ticket_id' => $ticket->id
+            ]);
+
+            PriorityTicket::create([
+                'priority_id' => $request->priority,
+                'ticket_id' => $ticket->id
+            ]);
+
+            return redirect(route('tickets.index'))->with('ticket_submitted', 'Ticket submitted successfully!');
 
         }
-
-        Ticket::create([
-            'author' => $request->author,
-            'author_email' => $request->author_email,
-            'title' => $request->title,
-            'category' => $category,
-            'description' => $request->description
-        ]);
-
-        return redirect(route('tickets.index'))->with('ticket_submitted', 'Ticket submitted successfully!');
-
+        
     }
 
     /**
@@ -95,27 +116,6 @@ class TicketController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(AgentRequest $request, Ticket $ticket)
-    {
-        
-        // Assign an agent to ticket
-
-        $request->validated();
-
-        Ticket::where('id', $ticket->id)->update([
-            'assigned_agent' => $request->assigned_agent]
-        );
-
-        return redirect(route('tickets.show', $ticket->id));
-        
-    }
 
     /**
      * Remove the specified resource from storage.

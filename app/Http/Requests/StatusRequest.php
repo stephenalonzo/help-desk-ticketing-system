@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AgentRequest extends FormRequest
+class StatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class AgentRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'assigned_agent' => 'required'
+            'status' => 'required'
         ];
 
         return $rules;

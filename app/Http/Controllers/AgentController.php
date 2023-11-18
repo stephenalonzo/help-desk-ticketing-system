@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use App\Http\Requests\AgentRequest;
 use Illuminate\Support\Facades\Auth;
 
 class AgentController extends Controller
@@ -27,6 +28,21 @@ class AgentController extends Controller
             
         }
 
+    }
+
+    public function store(AgentRequest $request, Ticket $ticket)
+    {
+        
+        // Assign an agent to ticket
+
+        $request->validated();
+
+        Ticket::where('id', $ticket->id)->update([
+            'assigned_agent' => $request->assigned_agent]
+        );
+
+        return redirect(route('tickets.show', $ticket->id));
+        
     }
 
 }

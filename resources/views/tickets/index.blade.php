@@ -38,28 +38,32 @@
             @foreach ($tickets as $ticket)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ $ticket['id'] }}
+                    {{ $ticket->id }}
                 </th>
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ $ticket['title'] }}
+                    {{ $ticket->title }}
                 </th>
                 <td class="px-6 py-4">
-                    {{ $ticket['status'] }}
+                    {{ $ticket->status }}
                 </td>
                 <td class="px-6 py-4">
-                    {{ $ticket['priority'] }}
+                    @foreach ($ticket->priorities as $priority)
+                        {{ $priority->priority }}
+                    @endforeach
                 </td>
                 <td class="px-6 py-4">
-                    {{ $ticket['category'] }}
+                    @foreach ($ticket->categories as $category)
+                        {{ $category->category }}
+                    @endforeach
                 </td>
                 <td class="px-6 py-4">
-                    {{ $ticket['author'] }}
+                    {{ $ticket->author }}
                 </td>
                 <td class="px-6 py-4">
-                    {{ $ticket['author_email'] }}
+                    {{ $ticket->author_email }}
                 </td>
                 <td class="px-6 py-4">
-                    {{ $ticket['assigned_agent'] }}
+                    {{ $ticket->assigned_agent }}
                 </td>
                 <td class="px-6 py-4">
                     <span class="flex flex-row items-center space-x-3">

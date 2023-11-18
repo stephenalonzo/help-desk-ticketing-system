@@ -27,8 +27,9 @@ class TicketRequest extends FormRequest
             'title' => 'required',
             'description' => 'required',
             'category' => 'required',
+            'priority' => 'required',
             'author' => 'required',
-            'author_email' => 'required'
+            'author_email' => 'required',
         ];
         
         return $rules;

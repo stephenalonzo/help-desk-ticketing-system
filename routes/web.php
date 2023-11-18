@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,10 +20,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('tickets', TicketController::class);
+Route::resource('assigned', AgentController::class);
+Route::resource('categories', CategoryController::class);
 
 Route::get('/', [TicketController::class, 'index'])->middleware(['auth', 'verified']);
 
-Route::post('/ticket/{ticket}/comment/', [CommentController::class, 'store']);
+Route::post('/tickets/{ticket}/agent/', [AgentController::class, 'store'])->name('agents.store');
+Route::post('/tickets/{ticket}/status/', [StatusController::class, 'store'])->name('statuses.store');
+Route::post('/tickets/{ticket}/comment/', [CommentController::class, 'store'])->name('comments.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -34,5 +40,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-// Route::resource('comment', CommentController::class);
-Route::resource('assigned', AgentController::class);
