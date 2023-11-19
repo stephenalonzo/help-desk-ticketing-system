@@ -2,6 +2,12 @@
 
 @section('content')
 <div class="relative overflow-x-auto space-y-4">
+    <div class="flex flex-row items-center justify-end">
+        <form action="/tickets" method="get" class="relative">
+            <i class="fas fa-search absolute top-3 left-5 transform -translate-x-1/2 text-gray-500"></i>
+            <input type="text" name="search" id="" class="pl-9 rounded-md border border-gray-200 focus:outline-none focus:ring-0 focus:border-gray-200" placeholder="Search">
+        </form>
+    </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>

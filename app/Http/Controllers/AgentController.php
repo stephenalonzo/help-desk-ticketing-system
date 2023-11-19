@@ -43,7 +43,7 @@ class AgentController extends Controller
         );
 
         Log::where('ticket_id', $ticket->id)->update([
-            'updated_at' => now()
+            'timestamp' => now()
         ]);
 
         return redirect(route('tickets.show', $ticket->id));

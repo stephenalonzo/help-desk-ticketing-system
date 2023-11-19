@@ -22,12 +22,21 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        $query = Ticket::latest();
+
+        if ($request->has('search') && !empty($request->input('search')))
+        {
+
+            $query->where('title', 'like', '%' . $request->input('search') . '%');
+
+        }
+
+        $tickets = $query->sortable(['id' => 'desc'])->paginate(2)->withQueryString();
         
-        return view('tickets.index', [
-            'tickets' => Ticket::sortable(['id' => 'desc'])->paginate(2),
-        ]);
+        return view('tickets.index', compact('tickets'));
 
     }
 

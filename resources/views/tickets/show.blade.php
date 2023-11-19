@@ -53,7 +53,7 @@
                                 {{ 'Open' }}
                             @endif
                         @endif
-                        @if ($ticket->assigned_agent == Auth::user()->id && $ticket->status == 'Open')
+                        @if ($ticket->assigned_agent == Auth::user()->id && $ticket->status == 'Open' && Auth::user()->hasPermissionTo('close tickets'))
                             <form action="{{ route('statuses.store', $ticket->id) }}" method="POST">
                                 @csrf
                                 <select name="status" id="" class="rounded-md border border-gray-400" onchange="this.form.submit()">
