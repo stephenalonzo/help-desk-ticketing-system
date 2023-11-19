@@ -23,8 +23,11 @@ class CommentRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'comment'   => ['required', 'max:255']
         ];
+
+        return $rules;
+        
     }
 }

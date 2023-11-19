@@ -11,6 +11,7 @@ use App\Http\Requests\TicketRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Models\CategoryTicket;
+use App\Models\Log;
 use App\Models\Priority;
 use App\Models\PriorityTicket;
 
@@ -25,7 +26,7 @@ class TicketController extends Controller
     {
         
         return view('tickets.index', [
-            'tickets' => Ticket::all()
+            'tickets' => Ticket::sortable(['id' => 'desc'])->paginate(2),
         ]);
 
     }
@@ -80,7 +81,13 @@ class TicketController extends Controller
                 'ticket_id' => $ticket->id
             ]);
 
-            return redirect(route('tickets.index'))->with('ticket_submitted', 'Ticket submitted successfully!');
+            Log::create([
+                'ticket_id' => $ticket->id,
+                'action' => 'CREATED',
+                'timestamp' => now(),
+            ]);
+
+            return redirect(route('tickets.index'))->with('message', 'Ticket submitted successfully!');
 
         }
         
@@ -111,8 +118,46 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Ticket $ticket)
     {
+
+        return view('tickets.edit', [
+            'ticket' => Ticket::findOrFail($ticket->id),
+            'categories' => Category::all(),
+            'priorities' => Priority::all()
+        ]);
+
+    }
+
+    public function update(TicketRequest $request, Ticket $ticket)
+    {
+
+        $request->validated();
+
+        Ticket::where('id', $ticket->id)->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'author' => $request->author,
+            'author_email' => $request->author_email,
+        ]);
+
+        CategoryTicket::where('ticket_id', $ticket->id)->update([
+            'category_id' => $request->category,
+            'ticket_id' => $ticket->id
+        ]);
+
+        PriorityTicket::where('ticket_id', $ticket->id)->update([
+            'priority_id' => $request->priority,
+            'ticket_id' => $ticket->id
+        ]);
+
+        Log::create([
+            'ticket_id' => $ticket->id,
+            'action' => 'UPDATED',
+            'timestamp' => NOW(),
+        ]);
+
+        return redirect(route('tickets.show', $ticket->id))->with('message', 'Ticket updated successfully!');
 
     }
 
@@ -123,8 +168,20 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Ticket $ticket)
     {
-        //
+        
+        $ticket = Ticket::findOrFail($ticket->id);
+
+        Log::create([
+            'ticket_id' => $ticket->id,
+            'action' => 'DELETED',
+            'timestamp' => NOW(),
+        ]);
+
+        $ticket->delete();
+
+        return redirect(route('tickets.index'))->with('message', 'Ticket deleted successfully!');
+
     }
 }
