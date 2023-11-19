@@ -1,34 +1,33 @@
 @extends('layout')
 
 @section('content')
-
-<div class="relative overflow-x-auto">
+<div class="relative overflow-x-auto space-y-4">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">
-                    ID
+                    @sortablelink('id')
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Title
+                    @sortablelink('title')
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Status
+                    @sortablelink('status')
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Priority
+                    @sortablelink('priority')
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Category
+                    @sortablelink('category')
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Author
+                    @sortablelink('author')
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Author Email
+                    @sortablelink('author_email', 'Author Email')
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Assigned Agent
+                    @sortablelink('assigned_agent', 'Assigned Agent')
                 </th>
                 <th scope="col" class="px-6 py-3">
                 </th>
@@ -65,15 +64,26 @@
                 <td class="px-6 py-4">
                     {{ $ticket->assigned_agent }}
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-6 py-4 flex flex-row items-center justify-around">
                     <span class="flex flex-row items-center space-x-3">
-                        <a href="{{ route('tickets.show', $ticket['id']) }}" class="rounded-md px-4 py-2 bg-blue-700 text-white">View</a>
+                        <a href="{{ route('tickets.show', $ticket->id) }}" class="rounded-md px-4 py-2 bg-blue-700 text-white">View</a>
+                    </span>
+                    <span class="flex flex-row items-center space-x-3">
+                        <a href="{{ route('tickets.edit', $ticket->id) }}" class="rounded-md px-4 py-2 bg-green-700 text-white">Edit</a>
+                    </span>
+                    <span class="flex flex-row items-center space-x-3">
+                        <form action="{{ route('tickets.destroy', $ticket->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button class="rounded-md px-4 py-2 bg-red-700 text-white">Delete</button>
+                        </form>
                     </span>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
+    {!! $tickets->appends(\Request::except('page'))->render() !!}
 </div>
 
 @endsection

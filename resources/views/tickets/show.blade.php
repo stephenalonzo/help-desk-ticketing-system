@@ -1,6 +1,9 @@
 @extends('layout')
 
 @section('content')
+@if (session()->has('message'))
+    {{ session('message') }}
+@endif
 <div class="bg-white border border-gray-400 rounded-md">
     <div class="bg-gray-200 p-3 rounded-t-md">View Ticket</div>
     <div class="relative overflow-x-auto">
@@ -43,14 +46,14 @@
                         Status
                     </th>
                     <td class="px-6 py-4 flex flex-row items-center space-x-6">
-                        @if ($ticket->assigned_agent != Auth::user()->id)
+                        @if ($ticket->assigned_agent != Auth::user()->id || $ticket->status == 'Closed')
                             @if ($ticket->status == 'Closed')
                                 {{ 'Closed' }}
                             @else
                                 {{ 'Open' }}
                             @endif
                         @endif
-                        @if ($ticket->assigned_agent == Auth::user()->id)
+                        @if ($ticket->assigned_agent == Auth::user()->id && $ticket->status == 'Open')
                             <form action="{{ route('statuses.store', $ticket->id) }}" method="POST">
                                 @csrf
                                 <select name="status" id="" class="rounded-md border border-gray-400" onchange="this.form.submit()">
@@ -127,7 +130,7 @@
                         Comments
                     </th>
                     <td class="px-6 py-8 space-y-8">
-                        @if ($ticket->assigned_agent == Auth::user()->id || $ticket->author == Auth::user()->name)
+                        @if ($ticket->status == 'Open' && $ticket->assigned_agent == Auth::user()->id || $ticket->author == Auth::user()->name)
                         <form action="{{ route('comments.store', $ticket->id) }}" method="post" class="space-y-4">
                             @csrf
                             <textarea name="comment" class="w-full h-52 resize-none border border-gray-400" placeholder="Add comment..."></textarea>
@@ -139,7 +142,7 @@
                         <div class="space-y-4">
                             <div class="flex flex-row items-center space-x-4">
                                 @foreach ($comment->users as $user)
-                                <h5 class="font-semibold">{{ $user->name}}</h5>
+                                <h5 class="font-semibold text-blue-700">{{ $user->name}}</h5>
                                 @endforeach
                                 <p class="text-xs text-gray-500">{{ date('F d, Y h:i A', strtotime($comment->created_at)) }}</p>
                             </div>

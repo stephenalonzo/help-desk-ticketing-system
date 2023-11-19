@@ -3,6 +3,8 @@
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TicketController;
@@ -23,15 +25,14 @@ Route::resource('tickets', TicketController::class);
 Route::resource('assigned', AgentController::class);
 Route::resource('categories', CategoryController::class);
 
-Route::get('/', [TicketController::class, 'index'])->middleware(['auth', 'verified']);
+Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified']);
+
+Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
 
 Route::post('/tickets/{ticket}/agent/', [AgentController::class, 'store'])->name('agents.store');
 Route::post('/tickets/{ticket}/status/', [StatusController::class, 'store'])->name('statuses.store');
 Route::post('/tickets/{ticket}/comment/', [CommentController::class, 'store'])->name('comments.store');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
