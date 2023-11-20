@@ -24,24 +24,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('tickets', TicketController::class);
-Route::resource('assigned', AgentController::class);
-Route::resource('categories', CategoryController::class);
-Route::resource('logs', LogController::class);
-Route::resource('permissions', PermissionController::class);
-Route::resource('roles', RoleController::class);
-Route::resource('users', UserController::class);
+Route::middleware(['auth'])->group(function () {
 
-Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified']);
+    Route::resource('tickets', TicketController::class);
+    Route::resource('assigned', AgentController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('logs', LogController::class);
+    Route::resource('permissions', PermissionController::class);
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+    
+    Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified']);
+    
+    // Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
+    // Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+    // Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    
+    Route::post('/tickets/{ticket}/agent/', [AgentController::class, 'store'])->name('agents.store');
+    Route::post('/tickets/{ticket}/status/', [StatusController::class, 'store'])->name('statuses.store');
+    Route::post('/tickets/{ticket}/comment/', [CommentController::class, 'store'])->name('comments.store');
 
-// Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
-// Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
-// Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
-
-Route::post('/tickets/{ticket}/agent/', [AgentController::class, 'store'])->name('agents.store');
-Route::post('/tickets/{ticket}/status/', [StatusController::class, 'store'])->name('statuses.store');
-Route::post('/tickets/{ticket}/comment/', [CommentController::class, 'store'])->name('comments.store');
-
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

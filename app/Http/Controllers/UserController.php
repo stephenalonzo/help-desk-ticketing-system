@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -23,7 +24,9 @@ class UserController extends Controller
     {
 
         return view('users.edit', [
-            'user' => User::findOrFail($user->id)
+            'user' => User::findOrFail($user->id),
+            'roles' => Role::all(),
+            'permissions' => Permission::all()
         ]);
 
     }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
+use App\Http\Requests\UserRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -40,7 +42,8 @@ class RoleController extends Controller
     {
 
         return view('roles.edit', [
-            'role' => Role::findOrFail($role->id)
+            'role' => Role::findOrFail($role->id),
+            'users' => User::all()
         ]);
 
     }

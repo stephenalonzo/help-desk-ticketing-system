@@ -124,7 +124,20 @@
                               </li>
                               @role('admin')
                               <li>
-                                 <a href="{{ route('categories.index') }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Categories</a>
+                                 <button type="button" class="flex items-center w-full pl-8 p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-category" data-collapse-toggle="dropdown-category">
+                                       <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Categories</span>
+                                       <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                                       </svg>
+                                 </button>
+                                 <ul id="dropdown-category" class="hidden py-2 space-y-2">
+                                       <li>
+                                          <a href="{{ route('categories.create') }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-20 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Create</a>
+                                       </li>
+                                       <li>
+                                          <a href="{{ route('categories.index') }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-20 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manage</a>
+                                       </li>
+                                 </ul>
                               </li>
                               <li>
                                  <a href="{{ route('logs.index') }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Logs</a>

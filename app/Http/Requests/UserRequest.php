@@ -23,8 +23,11 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        // $rules = [
-        //     'role' =
-        // ]
+        $rules = [
+            'user' => 'required'
+        ];
+
+        return $rules;
+
     }
 }
