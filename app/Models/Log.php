@@ -10,12 +10,12 @@ class Log extends Model
 {
     use HasFactory, Sortable;
 
-    public $table = 'ticket_logs';
     public $timestamps = false;
 
     protected $fillable = [
-        'ticket_id', 
-        'action', 
+        'env', 
+        'action',
+        'message', 
         'timestamp'
     ];
 

@@ -1450,6 +1450,9 @@ input:checked + .toggle-bg {
 .h-40 {
   height: 10rem;
 }
+.h-auto {
+  height: auto;
+}
 .max-h-24 {
   max-height: 6rem;
 }

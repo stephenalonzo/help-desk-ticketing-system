@@ -25,6 +25,15 @@ class CategoryController extends Controller
 
     }
 
+    public function edit(Category $category)
+    {
+
+        return view('categories.edit', [
+            'category' => Category::findOrFail($category->id)
+        ]);
+
+    }
+
     public function store(CategoryRequest $request)
     {
 
@@ -33,6 +42,26 @@ class CategoryController extends Controller
         Category::create(['category' => $request->category]);
 
         return redirect(route('categories.index'))->with('message', 'Category created successfully!');
+        
+    }
+
+    public function update(CategoryRequest $request, Category $category)
+    {
+
+        $request->validated();
+
+        Category::where('id', $category->id)->update(['category' => $request->category]);
+
+        return redirect(route('categories.index'))->with('message', 'Category updated successfully!');
+        
+    }
+    
+    public function destroy(Category $category)
+    {
+        
+        $category->delete();
+    
+        return redirect(route('categories.index'))->with('message', 'Category deleted successfully!');    
 
     }
     

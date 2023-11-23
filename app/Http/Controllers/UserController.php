@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
+use App\Http\Requests\UserRequest;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -31,14 +32,23 @@ class UserController extends Controller
 
     }
 
-    public function update(RoleRequest $request, User $user)
+    public function update(UserRequest $userRequest, RoleRequest $roleRequest, User $user)
     {
         
-        $request->validated();
+        $userRequest->validated();
 
-        $user->syncRoles($request->role);
+        User::where('id', $user->id)->update([
+            'name'  => $userRequest->name,
+            'email' => $userRequest->email
+        ]);
+
+        $roleRequest->validated();
+
+        $user = User::findOrFail($user->id);
+
+        $user->syncRoles($roleRequest->role);
         
-        return redirect(route('users.index'))->with('message', 'Role updated successfully!');
+        return redirect(route('users.index'))->with('message', 'User updated successfully!');
 
     }
 

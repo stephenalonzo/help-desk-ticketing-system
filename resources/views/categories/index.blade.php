@@ -30,10 +30,10 @@
                 </th>
                 <td class="px-6 py-4 flex flex-row items-center space-x-4">
                     <span class="flex flex-row items-center space-x-3">
-                        <a href="#" class="rounded-md px-4 py-2 bg-green-700 text-white">Edit</a>
+                        <a href="{{ route('categories.edit', $category->id) }}" class="rounded-md px-4 py-2 bg-green-700 text-white">Edit</a>
                     </span>
                     <span class="flex flex-row items-center space-x-3">
-                        <form action="#" method="post">
+                        <form action="{{ route('categories.destroy', $category->id) }}" method="post">
                             @csrf
                             @method('DELETE')
                             <button class="rounded-md px-4 py-2 bg-red-700 text-white">Delete</button>

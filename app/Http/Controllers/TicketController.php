@@ -91,7 +91,8 @@ class TicketController extends Controller
             ]);
 
             Log::create([
-                'ticket_id' => $ticket->id,
+                'env' => $request->route()->getName(),
+                'message' => 'Ticket ID #' . $ticket->id . ' created',
                 'action' => 'CREATED',
                 'timestamp' => now(),
             ]);
@@ -179,8 +180,6 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        
-        $ticket = Ticket::findOrFail($ticket->id);
 
         Log::create([
             'ticket_id' => $ticket->id,
