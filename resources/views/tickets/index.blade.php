@@ -74,9 +74,11 @@
                     <span class="flex flex-row items-center space-x-3">
                         <a href="{{ route('tickets.show', $ticket->id) }}" class="rounded-md px-4 py-2 bg-blue-700 text-white">View</a>
                     </span>
+                    @if ($ticket->author_email == Auth::user()->email)
                     <span class="flex flex-row items-center space-x-3">
                         <a href="{{ route('tickets.edit', $ticket->id) }}" class="rounded-md px-4 py-2 bg-green-700 text-white">Edit</a>
                     </span>
+                    @endif
                     <span class="flex flex-row items-center space-x-3">
                         <form action="{{ route('tickets.destroy', $ticket->id) }}" method="post">
                             @csrf
