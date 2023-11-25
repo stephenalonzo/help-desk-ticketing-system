@@ -19,23 +19,23 @@
     <div class="relative overflow-x-auto space-y-4">
         <h3 class="font-semibold text-xl">Logs</h3>
         <hr>
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table class="w-full overflow-y-scroll text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
-                        ID
+                        @sortablelink('id', 'ID')
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Env
+                        @sortablelink('env', 'Environment')
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Action
+                        @sortablelink('action', 'Action')
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Message
+                        @sortablelink('message', 'Message')
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Timestamp
+                        @sortablelink('timestamp', 'Timestamp')
                     </th>
                     <th scope="col" class="px-6 py-3">
                     </th>
@@ -63,6 +63,7 @@
                 @endforeach
             </tbody>
         </table>
+        {{ $logs->links() }}
     </div>
 </div>
 @endsection
