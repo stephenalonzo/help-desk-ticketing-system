@@ -32,7 +32,13 @@ class RoleController extends Controller
 
         $request->validated();
 
-        Role::create(['name' => $request->role]);
+        $role = Role::create(['name' => $request->role]);
+
+        $this->appLog(
+            $request->route()->getName(),
+            'CREATED',
+            'Role ID #' . $role->id . ' created'
+        );
 
         return redirect(route('roles.index'))->with('message', 'Role created successfully!');
 
@@ -53,18 +59,30 @@ class RoleController extends Controller
         
         $request->validated();
 
-        Role::where('id', $role->id)->update(['name' => $request->role]);
+        $role = Role::where('id', $role->id)->update(['name' => $request->role]);
+
+        $this->appLog(
+            $request->route()->getName(),
+            'UPDATED',
+            'Role ID #' . $role->id . ' updated'
+        );
         
         return redirect(route('roles.index'))->with('message', 'Role updated successfully!');
 
     }
 
-    public function destroy(Role $role)
+    public function destroy(Request $request, Role $role)
     {
 
-        $roles = Role::findOrFail($role->id);
+        $role = Role::findOrFail($role->id);
 
-        $roles->delete();
+        $role->delete();
+
+        $this->appLog(
+            $request->route()->getName(),
+            'DELETED',
+            'Role ID #' . $role->id . ' deleted'
+        );
 
         return redirect(route('roles.index'))->with('message', 'Role deleted successfully!');
 

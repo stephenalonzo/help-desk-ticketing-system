@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Models\Log;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -39,7 +40,13 @@ class CategoryController extends Controller
 
         $request->validated();
 
-        Category::create(['category' => $request->category]);
+        $category = Category::create(['category' => $request->category]);
+
+        $this->appLog(
+            $request->route()->getName(), 
+            'CREATED', 
+            'Category ID #' . $category->id . ' created', 
+        );
 
         return redirect(route('categories.index'))->with('message', 'Category created successfully!');
         
@@ -52,14 +59,26 @@ class CategoryController extends Controller
 
         Category::where('id', $category->id)->update(['category' => $request->category]);
 
+        $this->appLog(
+            $request->route()->getName(),
+            'UPDATED',
+            'Category ID #' . $category->id . ' updated',
+        );
+
         return redirect(route('categories.index'))->with('message', 'Category updated successfully!');
         
     }
     
-    public function destroy(Category $category)
+    public function destroy(Request $request, Category $category)
     {
         
         $category->delete();
+
+        $this->appLog(
+            $request->route()->getName(),
+            'DELETED',
+            'Category ID #' . $category->id . ' deleted',
+        );
     
         return redirect(route('categories.index'))->with('message', 'Category deleted successfully!');    
 

@@ -16,7 +16,7 @@ class DashboardController extends Controller
             'tickets' => Ticket::all(),
             'tickets_open' => Ticket::where('status', 'Open')->get(),
             'tickets_closed' => Ticket::where('status', 'Closed')->get(),
-            'logs' => Log::sortable(['timestamp' => 'desc'])->get()
+            'logs' => Log::sortable(['timestamp' => 'desc'])->paginate(5)
         ]);
 
     }

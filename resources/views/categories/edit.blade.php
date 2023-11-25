@@ -5,7 +5,7 @@
     {{ session('message') }}
 @endif
 <div class="bg-white border border-gray-400 rounded-md">
-    <div class="bg-gray-200 p-3 rounded-t-md">Edit a category</div>
+    <div class="bg-gray-200 p-3 rounded-t-md">Edit category</div>
     <div class="p-4">
         <form action="{{ route('categories.update', $category->id) }}" method="post" class="w-full mx-auto grid grid-flow-row gap-6">
             @csrf

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Layout</title>
+    <title>Help Desk Ticketing System</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet" type="text/css" />
     <script src="{{ asset('js/app.js') }}"></script>
@@ -114,11 +114,11 @@
                               </svg>
                         </button>
                         <ul id="dropdown-tickets" class="hidden py-2 space-y-2">
-                              @role('user')
+                              @haspermission('create tickets')
                               <li>
                                  <a href="{{ route('tickets.create') }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Create</a>
                               </li>
-                              @endrole
+                              @endhaspermission
                               <li>
                                  <a href="{{ route('tickets.index') }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manage</a>
                               </li>

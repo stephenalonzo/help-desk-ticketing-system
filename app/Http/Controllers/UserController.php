@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PermissionRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
@@ -32,7 +33,7 @@ class UserController extends Controller
 
     }
 
-    public function update(UserRequest $userRequest, RoleRequest $roleRequest, User $user)
+    public function update(Request $request, UserRequest $userRequest, RoleRequest $roleRequest, PermissionRequest $permissionRequest, User $user)
     {
         
         $userRequest->validated();
@@ -47,6 +48,18 @@ class UserController extends Controller
         $user = User::findOrFail($user->id);
 
         $user->syncRoles($roleRequest->role);
+
+        $permissionRequest->validated();
+
+        $user = User::findOrFail($user->id);
+
+        $user->syncPermissions($permissionRequest->permission);
+
+        $this->appLog(
+            $request->route()->getName(),
+            'UPDATED',
+            'User ID# ' . $user->id . ' profile has been updated'
+        );
         
         return redirect(route('users.index'))->with('message', 'User updated successfully!');
 

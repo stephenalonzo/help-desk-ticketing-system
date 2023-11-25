@@ -38,6 +38,12 @@ class CommentController extends Controller
             'user_id' => Auth::user()->id
         ]);
 
+        $this->appLog(
+            $request->route()->getName(),
+            'CREATED',
+            'Comment created for Ticket ID #' . $ticket->id . ''
+        );
+
         return redirect(route('tickets.show', $ticket->id));
 
     }

@@ -42,10 +42,12 @@ class AgentController extends Controller
             'assigned_agent' => $request->assigned_agent]
         );
 
-        Log::where('ticket_id', $ticket->id)->update([
-            'timestamp' => now()
-        ]);
-
+        $this->appLog(
+            $request->route()->getName(), 
+            'CREATED', 
+            'Assigned agent to ticket'
+        );
+        
         return redirect(route('tickets.show', $ticket->id));
         
     }

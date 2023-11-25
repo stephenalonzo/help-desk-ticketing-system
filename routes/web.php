@@ -33,23 +33,21 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('permissions', PermissionController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
-    
-    Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified']);
-    
-    // Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
-    // Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
-    // Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+
+    Route::get('/', [DashboardController::class, 'index'])->middleware(['verified'])->name('index');
+
+    Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
+    Route::get('/tickets/{ticket}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
     
     Route::post('/tickets/{ticket}/agent/', [AgentController::class, 'store'])->name('agents.store');
     Route::post('/tickets/{ticket}/status/', [StatusController::class, 'store'])->name('statuses.store');
     Route::post('/tickets/{ticket}/comment/', [CommentController::class, 'store'])->name('comments.store');
-
-});
-
-Route::middleware('auth')->group(function () {
+    Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
+    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 });
 
 require __DIR__.'/auth.php';

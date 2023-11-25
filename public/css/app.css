@@ -1453,11 +1453,23 @@ input:checked + .toggle-bg {
 .h-auto {
   height: auto;
 }
+.h-56 {
+  height: 14rem;
+}
+.h-72 {
+  height: 18rem;
+}
+.h-96 {
+  height: 24rem;
+}
 .max-h-24 {
   max-height: 6rem;
 }
 .max-h-2 {
   max-height: 0.5rem;
+}
+.max-h-64 {
+  max-height: 16rem;
 }
 .min-h-screen {
   min-height: 100vh;

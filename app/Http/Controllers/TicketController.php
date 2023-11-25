@@ -47,10 +47,12 @@ class TicketController extends Controller
      */
     public function create()
     {
+        
         return view('tickets.create', [
             'categories' => Category::all(),
             'priorities' => Priority::all()
         ]);
+
     }
 
     /**
@@ -90,12 +92,11 @@ class TicketController extends Controller
                 'ticket_id' => $ticket->id
             ]);
 
-            Log::create([
-                'env' => $request->route()->getName(),
-                'message' => 'Ticket ID #' . $ticket->id . ' created',
-                'action' => 'CREATED',
-                'timestamp' => now(),
-            ]);
+            $this->appLog(
+                $request->route()->getName(), 
+                'CREATED', 
+                'Ticket ID #' . $ticket->id . ' created'
+            );
 
             return redirect(route('tickets.index'))->with('message', 'Ticket submitted successfully!');
 
@@ -161,11 +162,11 @@ class TicketController extends Controller
             'ticket_id' => $ticket->id
         ]);
 
-        Log::create([
-            'ticket_id' => $ticket->id,
-            'action' => 'UPDATED',
-            'timestamp' => NOW(),
-        ]);
+        $this->appLog(
+            $request->route()->getName(), 
+            'UPDATED', 
+            'Ticket ID #' . $ticket->id . ' updated'
+        );
 
         return redirect(route('tickets.show', $ticket->id))->with('message', 'Ticket updated successfully!');
 
@@ -178,18 +179,19 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Ticket $ticket)
+    public function destroy(Request $request, Ticket $ticket)
     {
 
-        Log::create([
-            'ticket_id' => $ticket->id,
-            'action' => 'DELETED',
-            'timestamp' => NOW(),
-        ]);
+        $this->appLog(
+            $request->route()->getName(), 
+            'DELETED', 
+            'Ticket ID #' . $ticket->id . ' deleted'
+        );
 
         $ticket->delete();
 
         return redirect(route('tickets.index'))->with('message', 'Ticket deleted successfully!');
 
     }
+
 }

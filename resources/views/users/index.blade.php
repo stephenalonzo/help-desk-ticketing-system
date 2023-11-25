@@ -34,8 +34,13 @@
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {{ $user->email }}
                 </th>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <th scope="row" class="px-6 py-4 font-medium flex flex-row items-center space-x-4 text-gray-900 whitespace-nowrap dark:text-white">
                     <a href="{{ route('users.edit', $user->id) }}" class="rounded-md px-4 py-2 bg-green-700 text-white">Edit</a>
+                    <form action="{{ route('users.destroy' , $user->id) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 rounded-md bg-red-700 text-white">Delete</button>
+                    </form>
                 </th>
             </tr>
             @endforeach

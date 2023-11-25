@@ -24,7 +24,7 @@ class PermissionRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'permission' => 'required'
+            'permission' => 'nullable'
         ];
 
         return $rules;
