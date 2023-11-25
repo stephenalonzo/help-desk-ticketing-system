@@ -19,7 +19,7 @@ class RoleSeeder extends Seeder
 
         $admin = Role::create(['name' => 'admin']);
         $agent = Role::create(['name' => 'agent']);
-        Role::create(['name' => 'user']);
+        $user = Role::create(['name' => 'user']);
 
         $admin_permissions = [
             [
@@ -30,6 +30,9 @@ class RoleSeeder extends Seeder
             ],
             [
                 'name' => 'close tickets'
+            ],
+            [
+                'name' => 'manage tickets'
             ]
         ];
 
@@ -39,9 +42,11 @@ class RoleSeeder extends Seeder
             $permission = Permission::create($admin_permission);
 
             $admin->givePermissionTo($permission);
-            $agent->givePermissionTo($permission['close tickets']);
 
         }
+
+        $agent->givePermissionTo('close tickets');
+        $user->givePermissionTo('create tickets', 'manage tickets');
 
     }
 }
