@@ -119,9 +119,11 @@
                                  <a href="{{ route('tickets.create') }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Create</a>
                               </li>
                               @endhaspermission
+                              @haspermission('manage tickets')
                               <li>
                                  <a href="{{ route('tickets.index') }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manage</a>
                               </li>
+                              @endhaspermission
                               @role('admin')
                               <li>
                                  <button type="button" class="flex items-center w-full pl-8 p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-category" data-collapse-toggle="dropdown-category">

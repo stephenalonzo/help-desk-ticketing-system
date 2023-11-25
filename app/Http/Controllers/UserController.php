@@ -58,7 +58,7 @@ class UserController extends Controller
         $this->appLog(
             $request->route()->getName(),
             'UPDATED',
-            'User ID# ' . $user->id . ' profile has been updated'
+            'User ID #' . $user->id . ' profile has been updated'
         );
         
         return redirect(route('users.index'))->with('message', 'User updated successfully!');
