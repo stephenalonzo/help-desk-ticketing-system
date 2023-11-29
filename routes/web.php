@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
 
-    Route::get('/', [DashboardController::class, 'index'])->middleware(['verified'])->name('index');
+    Route::get('/', [DashboardController::class, 'index'])->middleware(['verified'])->name('dashboard');
 
     Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
     Route::get('/tickets/{ticket}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
@@ -47,6 +47,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/email', function () {
+        return view('vendor.notifications.email');
+    });
 
 });
 

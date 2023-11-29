@@ -4,7 +4,7 @@
 @if (session()->has('message'))
     {{ session('message') }}
 @endif
-<div class="bg-white border border-gray-400 rounded-md">
+<div class="bg-white border border-gray-300 rounded-md">
     <div class="bg-gray-200 p-3 rounded-t-md">View Ticket</div>
     <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -56,7 +56,7 @@
                         @if ($ticket->assigned_agent == Auth::user()->id && $ticket->status == 'Open' && Auth::user()->hasPermissionTo('close tickets'))
                             <form action="{{ route('statuses.store', $ticket->id) }}" method="POST">
                                 @csrf
-                                <select name="status" id="" class="rounded-md border border-gray-400" onchange="this.form.submit()">
+                                <select name="status" id="" class="rounded-md border border-gray-300" onchange="this.form.submit()">
                                     <option value="{{ $ticket->status }}" selected>{{ $ticket->status }}</option>
                                     <option value="{{ $ticket->status == 'Closed' ? 'Open' : 'Closed' }}">{{ $ticket->status == 'Closed' ? 'Open' : 'Close' }}</option>
                                 </select>
@@ -133,7 +133,7 @@
                         @if ($ticket->status == 'Open' && $ticket->assigned_agent == Auth::user()->id || $ticket->author == Auth::user()->name)
                         <form action="{{ route('comments.store', $ticket->id) }}" method="post" class="space-y-4">
                             @csrf
-                            <textarea name="comment" class="w-full h-52 resize-none border border-gray-400" placeholder="Add comment..."></textarea>
+                            <textarea name="comment" class="w-full h-52 resize-none border border-gray-300" placeholder="Add comment..."></textarea>
                             <button type="submit" class="px-4 py-2 rounded-md bg-blue-700 text-white">Submit</button>
                         </form>
                         @endif

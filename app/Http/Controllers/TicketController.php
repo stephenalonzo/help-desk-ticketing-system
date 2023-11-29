@@ -14,6 +14,8 @@ use App\Models\CategoryTicket;
 use App\Models\Log;
 use App\Models\Priority;
 use App\Models\PriorityTicket;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\TicketNotification;
 
 class TicketController extends Controller
 {
